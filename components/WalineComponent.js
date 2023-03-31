@@ -11,7 +11,7 @@ let waline = null
  * @param {*} props
  * @returns
  */
-const WalineComponent = (props) => {
+const WalineComponent = props => {
   const containerRef = React.createRef()
   const router = useRouter()
 
@@ -45,7 +45,7 @@ const WalineComponent = (props) => {
       const targetNode = document.getElementsByClassName('wl-cards')[0]
 
       // 当观察到变动时执行的回调函数
-      const mutationCallback = (mutations) => {
+      const mutationCallback = mutations => {
         for (const mutation of mutations) {
           const type = mutation.type
           if (type === 'childList') {

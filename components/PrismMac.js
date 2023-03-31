@@ -23,7 +23,7 @@ const PrismMac = () => {
       loadExternalResource('/css/prism-mac-style.css', 'css')
     }
     loadExternalResource(BLOG.PRISM_THEME_PATH, 'css')
-    loadExternalResource(BLOG.PRISM_JS_AUTO_LOADER, 'js').then((e) => {
+    loadExternalResource(BLOG.PRISM_JS_AUTO_LOADER, 'js').then(e => {
       Prism.plugins.autoloader.languages_path = BLOG.PRISM_JS_PATH
       renderPrismMac()
     })
@@ -38,9 +38,11 @@ const PrismMac = () => {
 /**
  * 将mermaid语言 渲染成图片
  */
-const renderMermaid = async() => {
+const renderMermaid = async () => {
   //   支持 Mermaid
-  const mermaidPres = document.querySelectorAll('pre.notion-code.language-mermaid')
+  const mermaidPres = document.querySelectorAll(
+    'pre.notion-code.language-mermaid'
+  )
   if (mermaidPres) {
     for (const e of mermaidPres) {
       const chart = e.querySelector('code').textContent
@@ -126,7 +128,10 @@ const fixCodeLineStyle = () => {
       }
     }
   })
-  observer.observe(document.querySelector('#container'), { attributes: true, subtree: true })
+  observer.observe(document.querySelector('#container'), {
+    attributes: true,
+    subtree: true
+  })
   setTimeout(() => {
     const preCodes = document.querySelectorAll('pre.notion-code')
     for (const preCode of preCodes) {

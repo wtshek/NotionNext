@@ -11,15 +11,21 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang={BLOG.LANG} className='test'>
+      <Html
+        lang={BLOG.LANG}
+        className="test"
+        style={{ scrollBehavior: 'smooth' }}
+      >
         <Head>
-          <link rel='icon' href='/favicon.ico' />
+          <link rel="icon" href="/favicon.ico" />
           <CommonScript />
         </Head>
 
-        <body className={`${BLOG.FONT_STYLE} tracking-wider bg-day dark:bg-night`}>
-            <Main />
-            <NextScript />
+        <body
+          className={`${BLOG.FONT_STYLE} tracking-wider bg-day dark:bg-night`}
+        >
+          <Main />
+          <NextScript />
         </body>
       </Html>
     )
