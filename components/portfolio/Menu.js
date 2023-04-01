@@ -2,14 +2,12 @@ import clsx from 'clsx'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Typography } from '@/components/portfolio/Typography'
-import { useRouter } from 'next/router'
 
 const defaultClassName =
   'flex justify-center pt-10 px-8 pb-8 w-full z-10 bg-black shadow-md shadow-black'
 
 const Header = ({ className, data }) => {
   const [isHeaderFixed, setIsHeaderFixed] = useState(false)
-  const router = useRouter()
 
   useEffect(() => {
     window.addEventListener(

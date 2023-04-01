@@ -1,7 +1,7 @@
+/* eslint-disable indent */
 import BLOG from '@/blog.config'
 
 /**
- * 第三方代码 统计脚本
  * @returns {JSX.Element}
  * @constructor
  */
@@ -10,7 +10,6 @@ const CommonScript = () => {
     <>
       {BLOG.COMMENT_DAO_VOICE_ID && (
         <>
-          {/* DaoVoice 反馈 */}
           <script
             async
             dangerouslySetInnerHTML={{
@@ -33,7 +32,6 @@ const CommonScript = () => {
         </>
       )}
 
-      {/* GoogleAdsense */}
       {BLOG.ADSENSE_GOOGLE_ID && (
         <script
           async
@@ -50,7 +48,6 @@ const CommonScript = () => {
         <script async src={`//code.tidio.co/${BLOG.COMMENT_TIDIO_ID}.js`} />
       )}
 
-      {/* gitter聊天室 */}
       {BLOG.COMMENT_GITTER_ROOM && (
         <>
           <script
@@ -71,8 +68,6 @@ const CommonScript = () => {
         </>
       )}
 
-      {/* 代码统计 */}
-      {/* ackee统计脚本 */}
       {BLOG.ANALYTICS_ACKEE_TRACKER && (
         <script
           async
@@ -82,7 +77,6 @@ const CommonScript = () => {
         />
       )}
 
-      {/* 谷歌统计 */}
       {BLOG.ANALYTICS_GOOGLE_ID && (
         <>
           <script
@@ -105,7 +99,6 @@ const CommonScript = () => {
         </>
       )}
 
-      {/* 引入音乐播放 */}
       {JSON.parse(BLOG.MUSIC_PLAYER) && (
         <script async src={BLOG.MUSIC_PLAYER_CDN_URL} />
       )}
