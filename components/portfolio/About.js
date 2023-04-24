@@ -9,10 +9,10 @@ import profilePic from '../../public/selfie.jpeg'
 const ProfilePicWidth = 384
 const ProfilePicHeight = 512
 
-const About = ({ id }) => {
+const About = ({ id, className }) => {
   return (
     <div
-      className="flex flex-col mx-16 my-8 sm:my-16 mb-28 md:my-36 md:mx-32 md:flex-row"
+      className={`flex flex-col mx-16 sm:mb-16 mb-28 md:mb-36 md:mx-32 md:flex-row ${className}`}
       id={id}
     >
       <div>
@@ -33,12 +33,22 @@ const About = ({ id }) => {
           different exposure on different technology. Currently I am working on
           being a full-stack developer
         </Typography>
-        <div className="hidden md:flex">
-          <button className="bg-slate-400 py-4 px-8 w-[200px] mt-4">
-            <Typography>Email Me</Typography>
+        <div className="md:flex">
+          <button className="hidden md:block bg-slate-400 py-4 px-8 w-[200px] mt-4">
+            <Typography>
+              <a href="mailto:wtshek119@gmail.com">Email Me</a>
+            </Typography>
           </button>
-          <button className="ml-4">
-            <Typography className="underline">Download CV</Typography>
+          <button className="mt-4 md:mt-0 md:ml-4">
+            <Typography className="underline">
+              <a
+                href="/pdf/WingTung_Shek_Resume.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Download CV
+              </a>
+            </Typography>
           </button>
         </div>
       </div>

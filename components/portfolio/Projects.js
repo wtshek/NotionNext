@@ -140,12 +140,20 @@ export const projects = {
   portfolio: {
     key: 'portfolio',
     tabName: 'My Portfolio',
-    component: <Typography>Just another div</Typography>
-  },
-  comingSoon: {
-    key: 'comingSoon',
-    tabName: 'Coming Soon!',
-    component: <Typography>Just another div</Typography>
+    component: (
+      <>
+        <Typography color={typographyColorMap.themed}>Netflix Clone</Typography>
+        <Typography className="underline">
+          <a href="https://github.com/wtshek/netflix-clone">Github</a>
+        </Typography>
+        <Typography className="underline">
+          <a href=" https://netflix-clone-nine-murex.vercel.app/auth">
+            Demo Link
+          </a>
+        </Typography>
+      </>
+      // add carousel?
+    )
   }
 }
 
@@ -172,10 +180,10 @@ const Projects = ({ id }) => {
                   onClick={onMenuItemClick(key)}
                   key={key}
                   className={clsx({
-                    'text-left': true,
-                    'p-2': true,
-                    'w-[100px] sm:w-[150px]': true,
-                    'shadow-[9px_5px_0px_0px_#94A3B8]': selectedProject === key,
+                    'text-left p-2 w-[100px] sm:w-[150px] relative bg-black': true,
+                    "before:absolute before:content-[' '] before:top-0 before:left-0 before:-z-10 before:bg-slate-400 before:w-full before:h-full before:transition-transform": true, // pre-render box shadow
+                    'before:translate-x-2.5 before:translate-y-2.5':
+                      selectedProject === key,
                     'sm:mt-4': index > 0
                   })}
                 >

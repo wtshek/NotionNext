@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { forwardRef } from 'react'
 
 export const typographyStyleMap = {
   h1: 'font-bold text-4xl sm:text-6xl',
@@ -14,22 +15,22 @@ export const typographyColorMap = {
   themed: 'text-slate-400'
 }
 
-export const Typography = ({
-  children,
-  className,
-  type,
-  color = 'text-white'
-}) => {
-  return (
-    <div
-      className={clsx({
-        'text-sm md:text-base': !type,
-        [type]: !!type,
-        [color]: !!color,
-        [className]: !!className
-      })}
-    >
-      {children}
-    </div>
-  )
-}
+export const Typography = forwardRef(
+  ({ children, className, type, color = 'text-white' }, ref) => {
+    return (
+      <div
+        className={clsx({
+          'text-sm md:text-base': !type,
+          [type]: !!type,
+          [color]: !!color,
+          [className]: !!className
+        })}
+        ref={ref}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+
+Typography.displayName = 'Typography'

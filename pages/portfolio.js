@@ -11,8 +11,8 @@ import Projects from '@/components/portfolio/Projects'
 
 const TechIconWidth = 100
 
-// TODO: locomotive for mobile?
 // TODO: add CV download button on mobile
+// TODO: fix the navigation
 
 const tech = [
   { image: React, key: 'react' },
@@ -31,6 +31,7 @@ const Portfolio = () => {
   return (
     <>
       <Menu data={Object.values(menu)} />
+      <div className="mt-[96px]" />
       <About id={menu.about.id} />
       <section className="hidden md:flex justify-around p-4 bg-slate-400">
         {tech.map(({ image, key }) => (

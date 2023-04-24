@@ -59,7 +59,7 @@ const Header = ({ className, data }) => {
         </header>
       </div>
       {/* menu for mobile */}
-      <div className="fixed bottom-0 w-screen px-16 py-8 bg-black flex just md:hidden shadow-md shadow-black">
+      <div className="z-10 fixed bottom-0 w-screen px-16 py-8 bg-black flex just md:hidden shadow-md shadow-black">
         {renderMenu()}
       </div>
     </>
