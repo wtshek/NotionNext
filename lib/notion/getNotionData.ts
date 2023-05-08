@@ -23,7 +23,10 @@ import { mapImgUrl } from './mapImage'
 export async function getGlobalNotionData({
   pageId = BLOG.NOTION_PAGE_ID,
   from
-}) {
+}: {
+  pageId?: string
+  from: string
+}): Promise<any> {
   // 获取Notion数据
   const notionPageData = deepClone(await getNotionPageData({ pageId, from }))
   delete notionPageData.block
@@ -44,11 +47,17 @@ export async function getGlobalNotionData({
  * @returns
  */
 function getLatestPosts({ allPages, from, latestPostCount }) {
-  const allPosts = allPages.filter(page => page.type === 'Post' && page.status === 'Published')
+  const allPosts = allPages.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
 
   const latestPosts = Object.create(allPosts).sort((a, b) => {
-    const dateA = new Date(a?.lastEditedTime || a?.createdTime || a?.date?.start_date)
-    const dateB = new Date(b?.lastEditedTime || b?.createdTime || b?.date?.start_date)
+    const dateA = new Date(
+      a?.lastEditedTime || a?.createdTime || a?.date?.start_date
+    )
+    const dateB = new Date(
+      b?.lastEditedTime || b?.createdTime || b?.date?.start_date
+    )
     return dateB - dateA
   })
   return latestPosts.slice(0, latestPostCount)
@@ -60,7 +69,13 @@ function getLatestPosts({ allPages, from, latestPostCount }) {
  * @param from 请求来源
  * @returns {Promise<JSX.Element|*|*[]>}
  */
-export async function getNotionPageData({ pageId, from }) {
+export async function getNotionPageData({
+  pageId,
+  from
+}: {
+  pageId: string
+  from: string
+}): Promise<any> {
   // 尝试从缓存获取
   const cacheKey = 'page_block_' + pageId
   const data = await getDataFromCache(cacheKey)
@@ -86,9 +101,19 @@ function getCustomNav({ allPages }) {
   if (allPages && allPages.length > 0) {
     allPages.forEach(p => {
       if (p?.slug?.indexOf('http') === 0) {
-        customNav.push({ icon: p.icon || null, name: p.title, to: p.slug, show: true })
+        customNav.push({
+          icon: p.icon || null,
+          name: p.title,
+          to: p.slug,
+          show: true
+        })
       } else {
-        customNav.push({ icon: p.icon || null, name: p.title, to: '/' + p.slug, show: true })
+        customNav.push({
+          icon: p.icon || null,
+          name: p.title,
+          to: '/' + p.slug,
+          show: true
+        })
       }
     })
   }
@@ -96,7 +121,12 @@ function getCustomNav({ allPages }) {
 }
 
 function getCustomMenu({ collectionData }) {
-  const menuPages = collectionData.filter(post => (post.type === BLOG.NOTION_PROPERTY_NAME.type_menu || post.type === BLOG.NOTION_PROPERTY_NAME.type_sub_menu) && post.status === 'Published')
+  const menuPages = collectionData.filter(
+    post =>
+      (post.type === BLOG.NOTION_PROPERTY_NAME.type_menu ||
+        post.type === BLOG.NOTION_PROPERTY_NAME.type_sub_menu) &&
+      post.status === 'Published'
+  )
   const menus = []
   if (menuPages && menuPages.length > 0) {
     menuPages.forEach(e => {
@@ -125,7 +155,9 @@ function getCustomMenu({ collectionData }) {
  */
 function getTagOptions(schema) {
   if (!schema) return {}
-  const tagSchema = Object.values(schema).find(e => e.name === BLOG.NOTION_PROPERTY_NAME.tags)
+  const tagSchema = Object.values(schema).find(
+    e => e.name === BLOG.NOTION_PROPERTY_NAME.tags
+  )
   return tagSchema?.options || []
 }
 
@@ -136,7 +168,9 @@ function getTagOptions(schema) {
  */
 function getCategoryOptions(schema) {
   if (!schema) return {}
-  const categorySchema = Object.values(schema).find(e => e.name === BLOG.NOTION_PROPERTY_NAME.category)
+  const categorySchema = Object.values(schema).find(
+    e => e.name === BLOG.NOTION_PROPERTY_NAME.category
+  )
   return categorySchema?.options || []
 }
 
@@ -148,9 +182,15 @@ function getCategoryOptions(schema) {
  */
 function getBlogInfo({ collection, block }) {
   const title = collection?.name?.[0][0] || BLOG.TITLE
-  const description = collection?.description ? Object.assign(collection).description[0][0] : BLOG.DESCRIPTION
-  const pageCover = collection?.cover ? (mapImgUrl(collection?.cover, block[idToUuid(BLOG.NOTION_PAGE_ID)]?.value)) : BLOG.HOME_BANNER_IMAGE
-  let icon = collection?.icon ? (mapImgUrl(collection?.icon, collection, 'collection')) : BLOG.AVATAR
+  const description = collection?.description
+    ? Object.assign(collection).description[0][0]
+    : BLOG.DESCRIPTION
+  const pageCover = collection?.cover
+    ? mapImgUrl(collection?.cover, block[idToUuid(BLOG.NOTION_PAGE_ID)]?.value)
+    : BLOG.HOME_BANNER_IMAGE
+  let icon = collection?.icon
+    ? mapImgUrl(collection?.icon, collection, 'collection')
+    : BLOG.AVATAR
   // 站点图标不能是emoji情
   const emojiPattern = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g
   if (emojiPattern.test(icon)) {
@@ -183,7 +223,7 @@ async function getPageRecordMapByNotionAPI({ pageId, from }) {
   // Check Type Page-Database和Inline-Database
   if (
     rawMetadata?.type !== 'collection_view_page' &&
-        rawMetadata?.type !== 'collection_view'
+    rawMetadata?.type !== 'collection_view'
   ) {
     console.warn(`pageId "${pageId}" is not a database`)
     return null
@@ -197,9 +237,21 @@ async function getPageRecordMapByNotionAPI({ pageId, from }) {
 
   const viewIds = rawMetadata?.view_ids
   const collectionData = []
-  const pageIds = getAllPageIds(collectionQuery, collectionId, collectionView, viewIds)
+  const pageIds = getAllPageIds(
+    collectionQuery,
+    collectionId,
+    collectionView,
+    viewIds
+  )
   if (pageIds?.length === 0) {
-    console.error('获取到的文章列表为空，请检查notion模板', collectionQuery, collection, collectionView, viewIds, pageRecordMap)
+    console.error(
+      '获取到的文章列表为空，请检查notion模板',
+      collectionQuery,
+      collection,
+      collectionView,
+      viewIds,
+      pageRecordMap
+    )
   }
   for (let i = 0; i < pageIds.length; i++) {
     const id = pageIds[i]
@@ -207,7 +259,14 @@ async function getPageRecordMapByNotionAPI({ pageId, from }) {
     if (!value) {
       continue
     }
-    const properties = (await getPageProperties(id, block, schema, null, getTagOptions(schema))) || null
+    const properties =
+      (await getPageProperties(
+        id,
+        block,
+        schema,
+        null,
+        getTagOptions(schema)
+      )) || null
     if (properties) {
       collectionData.push(properties)
     }
@@ -219,11 +278,13 @@ async function getPageRecordMapByNotionAPI({ pageId, from }) {
     if (post.type === 'Post' && post.status === 'Published') {
       postCount++
     }
-    return post &&
-            post.type &&
-            (post.type === 'Post' || post.type === 'Page') &&
-            (post.status === 'Published' || post.status === 'Invisible') &&
-            (!post.slug.startsWith('http'))
+    return (
+      post &&
+      post.type &&
+      (post.type === 'Post' || post.type === 'Page') &&
+      (post.status === 'Published' || post.status === 'Invisible') &&
+      !post.slug.startsWith('http')
+    )
   })
 
   // Sort by date
@@ -235,11 +296,27 @@ async function getPageRecordMapByNotionAPI({ pageId, from }) {
     })
   }
 
-  const notice = await getNotice(collectionData.filter(post => { return post && post?.type && post?.type === 'Notice' && post.status === 'Published' })?.[0])
-  const categoryOptions = getAllCategories({ allPages, categoryOptions: getCategoryOptions(schema) })
+  const notice = await getNotice(
+    collectionData.filter(post => {
+      return (
+        post &&
+        post?.type &&
+        post?.type === 'Notice' &&
+        post.status === 'Published'
+      )
+    })?.[0]
+  )
+  const categoryOptions = getAllCategories({
+    allPages,
+    categoryOptions: getCategoryOptions(schema)
+  })
   const tagOptions = getAllTags({ allPages, tagOptions: getTagOptions(schema) })
   const siteInfo = getBlogInfo({ collection, block })
-  const customNav = getCustomNav({ allPages: collectionData.filter(post => post.type === 'Page' && post.status === 'Published') })
+  const customNav = getCustomNav({
+    allPages: collectionData.filter(
+      post => post.type === 'Page' && post.status === 'Published'
+    )
+  })
   // 新的菜单
   const customMenu = getCustomMenu({ collectionData })
   const latestPosts = getLatestPosts({ allPages, from, latestPostCount: 5 })

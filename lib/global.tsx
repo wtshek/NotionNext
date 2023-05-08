@@ -1,11 +1,35 @@
 import { generateLocaleDict, initLocale } from './lang'
-import { createContext, useContext, useEffect, useState } from 'react'
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction
+} from 'react'
 import Router from 'next/router'
 import BLOG from '@/blog.config'
 import { initDarkMode, initTheme, saveThemeToCookies } from '@/lib/theme'
 import { ALL_THEME } from '@/themes'
 
-const GlobalContext = createContext()
+type GlobalContextType = {
+  onLoading: boolean
+  changeLoadingState: Dispatch<SetStateAction<boolean>>
+  locale: LocaleDictType
+  updateLocale: Dispatch<SetStateAction<LocaleDictType>>
+  isDarkMode: boolean
+  updateDarkMode: Dispatch<SetStateAction<boolean>>
+  theme: string
+  setTheme: Dispatch<SetStateAction<string>>
+  switchTheme: () => string
+  changeTheme: (theme: string) => void
+}
+
+type LocaleDictType = {
+  COMMON: { CATEGORY: string; MORE: string; NO_MORE: string }
+}
+
+const GlobalContext = createContext<GlobalContextType | undefined>()
 
 /**
  * 全局变量Provider，包括语言本地化、样式主题、搜索词

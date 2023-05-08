@@ -21,14 +21,17 @@ export default function Category(props) {
     slug: 'category',
     type: 'website'
   }
+
   return <ThemeComponents.LayoutCategoryIndex {...props} meta={meta} />
 }
 
 export async function getStaticProps() {
-  const props = await getGlobalNotionData({ from: 'category-index-props' })
+  const props = await getGlobalNotionData({
+    from: 'category-index-props'
+  })
   delete props.allPages
   return {
     props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND as string)
   }
 }

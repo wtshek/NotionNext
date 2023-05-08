@@ -17,7 +17,10 @@ if (process.env.MONGO_DB_URL && process.env.MONGO_DB_NAME) {
  * @param {*} key
  * @returns
  */
-export async function getDataFromCache(key, force) {
+export async function getDataFromCache(
+  key: string,
+  force?: string
+): Promise<null | any> {
   if (BLOG.ENABLE_CACHE || force) {
     const dataFromCache = await api.getCache(key)
     if (JSON.stringify(dataFromCache) === '[]') {

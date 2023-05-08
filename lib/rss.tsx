@@ -33,7 +33,8 @@ export async function generateRss(posts) {
       name: BLOG.AUTHOR,
       email: BLOG.CONTACT_EMAIL,
       link: BLOG.LINK
-    }
+    },
+    id: 'https://www.wingtungshek.com' //TODO: check if need to change
   })
   for (const post of posts) {
     feed.addItem({

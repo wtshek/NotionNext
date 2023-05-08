@@ -26,6 +26,7 @@ export default function Category(props) {
     image: siteInfo?.pageCover,
     type: 'website'
   }
+
   return <ThemeComponents.LayoutCategory {...props} meta={meta} />
 }
 
@@ -34,9 +35,13 @@ export async function getStaticProps({ params: { category } }) {
   let props = await getGlobalNotionData({ from })
 
   // 过滤状态
-  props.posts = props.allPages.filter(page => page.type === 'Post' && page.status === 'Published')
+  props.posts = props.allPages.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
   // 处理过滤
-  props.posts = props.posts.filter(post => post && post.category && post.category.includes(category))
+  props.posts = props.posts.filter(
+    post => post && post.category && post.category.includes(category)
+  )
   // 处理文章页数
   props.postCount = props.posts.length
   // 处理分页

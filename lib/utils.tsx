@@ -6,6 +6,11 @@
  * @param type js 或 css
  * @returns {Promise<unknown>}
  */
+
+enum SpecialCategory {
+  BOOK = 'Book'
+}
+
 export function loadExternalResource(url, type) {
   return new Promise((resolve, reject) => {
     let tag
@@ -88,8 +93,8 @@ export function isIterable(obj) {
   return obj != null && typeof obj[Symbol.iterator] === 'function'
 }
 
-export function deepClone(obj) {
-  const newObj = Array.isArray(obj) ? [] : {}
+export function deepClone<T>(obj: T): T {
+  const newObj: any = Array.isArray(obj) ? [] : {}
   if (obj && typeof obj === 'object') {
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -121,13 +126,16 @@ export const isBrowser = () => typeof window !== 'undefined'
  * @param pageSize 每页文章数量
  * @returns {*}
  */
-export const getListByPage = function (list, pageIndex, pageSize) {
+export const getListByPage = function (
+  list: unknown[],
+  pageIndex: number,
+  pageSize: number
+): unknown[] {
   return list.slice(0, pageIndex * pageSize)
 }
 
 export const splitText = (text, className) => {
   const splitted = text.split('').map((char, index) => {
-    console.log(char)
     return (
       <div key={index} className={className}>
         {char === ' ' ? <>&nbsp;</> : char}
@@ -137,3 +145,6 @@ export const splitText = (text, className) => {
 
   return <div className="flex">{splitted}</div>
 }
+
+export const isBookCategory = (category: string): boolean =>
+  category === SpecialCategory.BOOK

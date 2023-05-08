@@ -4,8 +4,22 @@ import React from 'react'
 import TagItemMini from './TagItemMini'
 import CONFIG_HEXO from '../config_hexo'
 import NotionPage from '@/components/NotionPage'
+import { PostType, SiteInfoType } from '@/utils/types'
+import clsx from 'clsx'
 
-const BlogPostCard = ({ post, showSummary, siteInfo }) => {
+type BlogPostCardType = {
+  post: PostType
+  showSummary: boolean
+  siteInfo: SiteInfoType
+  alwaysUseVerticalLayout
+}
+
+const BlogPostCard = ({
+  post,
+  showSummary,
+  siteInfo,
+  alwaysUseVerticalLayout
+}: BlogPostCardType) => {
   const showPreview = CONFIG_HEXO.POST_LIST_PREVIEW && post.blockMap
   if (post && !post.page_cover && CONFIG_HEXO.POST_LIST_COVER_DEFAULT) {
     post.page_cover = siteInfo?.pageCover
@@ -19,13 +33,36 @@ const BlogPostCard = ({ post, showSummary, siteInfo }) => {
       data-aos-easing="ease-in-out"
       data-aos-once="true"
       data-aos-anchor-placement="top-bottom"
-      className="flex md:flex-row flex-col-reverse even:md:flex-row-reverse
-        w-full md:h-72 h-96 justify-between overflow-hidden drop-shadow-md
-        border dark:border-black rounded-xl bg-white dark:bg-hexo-black-gray"
+      className={clsx(
+        `flex flex-col w-full h-96 overflow-hidden drop-shadow-md
+        border dark:border-black rounded-xl bg-white dark:bg-hexo-black-gray`,
+        {
+          'md:flex-row md:h-72': !alwaysUseVerticalLayout
+        }
+      )}
     >
+      {showPageCover && !showPreview && post?.page_cover && (
+        <div
+          className={clsx(
+            `flex relative duration-200 cursor-pointer transform overflow-hidden`,
+            { 'md:w-5/12': !alwaysUseVerticalLayout }
+          )}
+        >
+          <Link href={`${BLOG.SUB_PATH}/${post.slug}`} passHref legacyBehavior>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post?.page_cover}
+              alt={post.title}
+              className="h-full w-full hover:scale-125 transform object-cover duration-500"
+            />
+          </Link>
+        </div>
+      )}
       <div
         className={`lg:p-8 p-4 flex flex-col  ${
-          showPageCover ? 'md:w-7/12 w-full' : 'w-full'
+          showPageCover && !alwaysUseVerticalLayout
+            ? 'md:w-7/12 w-full'
+            : 'w-full'
         }`}
       >
         <Link
@@ -102,20 +139,6 @@ const BlogPostCard = ({ post, showSummary, siteInfo }) => {
           </div>
         </div>
       </div>
-
-      {showPageCover && !showPreview && post?.page_cover && (
-        <div className="flex relative duration-200 cursor-pointer transform overflow-hidden md:w-5/12 ">
-          <Link href={`${BLOG.SUB_PATH}/${post.slug}`} passHref legacyBehavior>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={post?.page_cover}
-              alt={post.title}
-              className="h-full w-full hover:scale-125 transform object-cover duration-500"
-            />
-            {/* <Image className='hover:scale-125 transform duration-500' src={post?.page_cover} alt={post.title} layout='fill' objectFit='cover' loading='lazy' /> */}
-          </Link>
-        </div>
-      )}
     </div>
   )
 }

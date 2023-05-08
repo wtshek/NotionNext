@@ -15,7 +15,9 @@ export async function getStaticProps() {
   const props = await getGlobalNotionData({ from })
 
   const { siteInfo } = props
-  props.posts = props.allPages.filter(page => page.type === 'Post' && page.status === 'Published')
+  props.posts = props.allPages.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
 
   delete props.allPages
   const meta = {
@@ -39,7 +41,11 @@ export async function getStaticProps() {
       if (post.password && post.password !== '') {
         continue
       }
-      post.blockMap = await getPostBlocks(post.id, 'slug', BLOG.POST_PREVIEW_LINES)
+      post.blockMap = await getPostBlocks(
+        post.id,
+        'slug',
+        BLOG.POST_PREVIEW_LINES
+      )
     }
   }
 

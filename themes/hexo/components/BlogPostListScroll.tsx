@@ -6,18 +6,33 @@ import throttle from 'lodash.throttle'
 import React from 'react'
 import CONFIG_HEXO from '../config_hexo'
 import { getListByPage } from '@/lib/utils'
+import { PostType, SiteInfoType } from '@/utils/types'
+import clsx from 'clsx'
+
+type BlogPostListScrollType = {
+  posts: unknown[]
+  currentSearch: string
+  showSummary: boolean
+  siteInfo: SiteInfoType
+  shouldUseGrid: boolean
+}
 
 /**
- * 博客列表滚动分页
- * @param posts 所有文章
- * @param tags 所有标签
+ * @param posts
+ * @param tags
  * @returns {JSX.Element}
  * @constructor
  */
-const BlogPostListScroll = ({ posts = [], currentSearch, showSummary = CONFIG_HEXO.POST_LIST_SUMMARY, siteInfo }) => {
+const BlogPostListScroll = ({
+  posts = [],
+  currentSearch,
+  showSummary = CONFIG_HEXO.POST_LIST_SUMMARY,
+  siteInfo,
+  shouldUseGrid
+}: BlogPostListScrollType) => {
   const postsPerPage = BLOG.POSTS_PER_PAGE
   const [page, updatePage] = React.useState(1)
-  const postsToShow = getListByPage(posts, page, postsPerPage)
+  const postsToShow = getListByPage(posts, page, postsPerPage) as PostType[]
 
   let hasMore = false
   if (posts) {
@@ -30,16 +45,21 @@ const BlogPostListScroll = ({ posts = [], currentSearch, showSummary = CONFIG_HE
     updatePage(page + 1)
   }
 
-  // 监听滚动自动分页加载
-  const scrollTrigger = React.useCallback(throttle(() => {
-    const scrollS = window.scrollY + window.outerHeight
-    const clientHeight = targetRef ? (targetRef.current ? (targetRef.current.clientHeight) : 0) : 0
-    if (scrollS > clientHeight + 100) {
-      handleGetMore()
-    }
-  }, 500))
+  const scrollTrigger = React.useCallback(
+    throttle(() => {
+      const scrollS = window.scrollY + window.outerHeight
+      const clientHeight = targetRef
+        ? targetRef.current
+          ? targetRef.current.clientHeight
+          : 0
+        : 0
+      if (scrollS > clientHeight + 100) {
+        handleGetMore()
+      }
+    }, 500),
+    []
+  )
 
-  // 监听滚动
   React.useEffect(() => {
     window.addEventListener('scroll', scrollTrigger)
     return () => {
@@ -53,21 +73,36 @@ const BlogPostListScroll = ({ posts = [], currentSearch, showSummary = CONFIG_HE
   if (!postsToShow || postsToShow.length === 0) {
     return <BlogPostListEmpty currentSearch={currentSearch} />
   } else {
-    return <div id='container' ref={targetRef} className='w-full'>
+    return (
+      <div id="container" ref={targetRef} className="w-full">
+        <div
+          className={clsx({
+            'space-y-1 px-2': true,
+            'grid grid-cols-2 md:grid-cols-3 gap-4': shouldUseGrid,
+            'flex flex-wrap lg:space-y-4 ': !shouldUseGrid
+          })}
+        >
+          {postsToShow.map(post => (
+            <BlogPostCard
+              key={post.id}
+              post={post}
+              showSummary={showSummary}
+              siteInfo={siteInfo}
+              alwaysUseVerticalLayout={shouldUseGrid}
+            />
+          ))}
+        </div>
 
-      {/* 文章列表 */}
-      <div className='flex flex-wrap space-y-1 lg:space-y-4 px-2'>
-        {postsToShow.map(post => (
-          <BlogPostCard key={post.id} post={post} showSummary={showSummary} siteInfo={siteInfo}/>
-        ))}
+        <div>
+          <div
+            onClick={() => {
+              handleGetMore()
+            }}
+            className="w-full my-4 py-4 text-center cursor-pointer rounded-xl dark:text-gray-200"
+          ></div>
+        </div>
       </div>
-
-      <div>
-        <div onClick={() => { handleGetMore() }}
-             className='w-full my-4 py-4 text-center cursor-pointer rounded-xl dark:text-gray-200'
-        > {hasMore ? locale.COMMON.MORE : `${locale.COMMON.NO_MORE}`} </div>
-      </div>
-    </div>
+    )
   }
 }
 
