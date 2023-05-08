@@ -2,7 +2,7 @@ import {
   Typography,
   typographyColorMap,
   typographyStyleMap
-} from '@/components/portfolio/Typography'
+} from '@/components/v1/portfolio/Typography'
 import Image from 'next/image'
 import profilePic from '../../public/selfie.jpeg'
 

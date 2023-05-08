@@ -1,6 +1,13 @@
 import clsx from 'clsx'
 import { forwardRef } from 'react'
 
+type TypographyType = {
+  children: any
+  className?: string
+  type?: string
+  color?: string
+}
+
 export const typographyStyleMap = {
   h1: 'font-bold text-4xl sm:text-6xl',
   h3: 'font-bold text-xl sm:text-3xl',
@@ -15,7 +22,7 @@ export const typographyColorMap = {
   themed: 'text-slate-400'
 }
 
-export const Typography = forwardRef(
+export const Typography = forwardRef<HTMLDivElement, TypographyType>(
   ({ children, className, type, color = 'text-white' }, ref) => {
     return (
       <div

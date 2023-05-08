@@ -2,12 +2,11 @@ import BLOG from 'blog.config'
 import React from 'react'
 import dynamic from 'next/dynamic'
 
-// import 'animate.css'
 import '@/styles/globals.css'
 
 // core styles shared by all of react-notion-x (required)
 import 'react-notion-x/src/styles.css'
-import '@/styles/notion.css' //  重写部分样式
+import '@/styles/notion.css'
 
 import { GlobalContextProvider } from '@/lib/global'
 import { DebugPanel } from '@/components/DebugPanel'
@@ -37,7 +36,6 @@ const Messenger = dynamic(() => import('@/components/FacebookMessenger'), {
 })
 
 const MyApp = ({ Component, pageProps }) => {
-  // 外部插件
   const externalPlugins = (
     <>
       {JSON.parse(BLOG.THEME_SWITCH) && <ThemeSwitch />}
