@@ -11,10 +11,10 @@ import clsx from 'clsx'
 
 type BlogPostListScrollType = {
   posts: unknown[]
-  currentSearch: string
-  showSummary: boolean
   siteInfo: SiteInfoType
   shouldUseGrid: boolean
+  showSummary?: boolean
+  currentSearch?: string
 }
 
 /**
@@ -68,7 +68,6 @@ const BlogPostListScroll = ({
   })
 
   const targetRef = React.useRef(null)
-  const { locale } = useGlobal()
 
   if (!postsToShow || postsToShow.length === 0) {
     return <BlogPostListEmpty currentSearch={currentSearch} />

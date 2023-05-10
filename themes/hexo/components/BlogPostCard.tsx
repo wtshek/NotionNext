@@ -129,14 +129,6 @@ const BlogPostCard = ({
             <i className="mr-1 far fa-folder" />
             {post.category}
           </Link>
-          <div className="md:flex-nowrap flex-wrap md:justify-start inline-block">
-            <div>
-              {' '}
-              {post.tagItems.map(tag => (
-                <TagItemMini key={tag.name} tag={tag} />
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </div>
