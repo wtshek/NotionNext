@@ -34,7 +34,7 @@ export async function generateRss(posts) {
       email: BLOG.CONTACT_EMAIL,
       link: BLOG.LINK
     },
-    id: 'https://www.wingtungshek.com' //TODO: check if need to change
+    id: 'https://www.wingtungshek.com' // TODO: check if need to change
   })
   for (const post of posts) {
     feed.addItem({

@@ -16,7 +16,12 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
-  plugins: ['react', 'react-hooks'],
+  plugins: [
+    'react',
+    'react-hooks',
+    '@typescript-eslint/eslint-plugin',
+    '@typescript-eslint/recommended'
+  ],
   settings: {
     react: {
       version: 'detect'
